@@ -13,18 +13,7 @@
       <form
         class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
       >
-        <!-- <div class="input-group">
-          <input
-            class="form-control"
-            type="text"
-            placeholder="Search for..."
-            aria-label="Search for..."
-            aria-describedby="btnNavbarSearch"
-          />
-          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-            <i class="fas fa-search"></i>
-          </button>
-        </div> -->
+      
       </form>
       <!-- Navbar-->
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -46,6 +35,15 @@
             <li><a class="dropdown-item" href="#!">Activity Log</a></li>
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#!">Logout</a></li>
+              <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Log Out') }}
+                    </ش>
+                </form>
           </ul>
         </li>
       </ul>
