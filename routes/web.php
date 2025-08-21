@@ -1,41 +1,26 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\ProfileController;
 
-// جروبات الأدمن
-Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-            ->name('dashboard');
-        // Route::resource('users', AdminUserController::class);
-    });
+/*
+|--------------------------------------------------------------------------
+| Web Routes (المستخدم العادي)
+|--------------------------------------------------------------------------
+*/
 
-// الصفحة الرئيسية
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
+});
 
-// /dashboard العامة
-Route::get('/dashboard', function () {
-    // لو أدمن حوّله للوحة تحكم الأدمن
-    if (auth()->user()?->is_admin) {
-        return redirect()->route('admin.dashboard');
-    }
-
-    // لو عندك صفحة للمستخدم العادي اسمها resources/views/dashboard.blade.php
-    if (view()->exists('dashboard')) {
+// داشبورد المستخدم العادي (Breeze القياسي)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard');
-    }
+    })->name('dashboard');
+});
 
-    // مؤقتًا لو الصفحة غير موجودة، رجّع welcome بدل ما يرمي خطأ
-    return view('welcome');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// بروفايل
+// البروفايل
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -43,3 +28,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';

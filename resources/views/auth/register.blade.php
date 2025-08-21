@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WELDORK - Register</title>
+    <title>Capital - Register</title>
     <style>
         * {
             margin: 0;
@@ -374,7 +374,7 @@
                     name="email" 
                     value="{{ old('email') }}" 
                     required 
-                    autocomplete="username"
+                    autocomplete="email"
                     placeholder="Enter your email address"
                 />
                 @if ($errors->get('email'))

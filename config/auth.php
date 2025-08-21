@@ -59,41 +59,60 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+    'defaults' => [
+        'guard' => 'web',
+        'passwords' => 'users',
     ],
 
     'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
     ],
 
-    'admin' => [
-        'driver' => 'session',
-        'provider' => 'admins',
-    ],
-],
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\User::class,
+        ],
 
-'providers' => [
-    'users' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\User::class,
+        'admins' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Admin::class, // اتأكدي إن الموديل موجود
+        ],
     ],
 
-    'admins' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Admin::class, // هتعمل موديل خاص بالـ Admin
+    'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'admin_password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
-],
+
+    'password_timeout' => 10800,
+
+    'providers' => [
+        'admins' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Admin::class, // تأكد من وجود هذا الموديل
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WELDORK - Email Verification</title>
+    <title>Capital - Email Verification</title>
     <style>
         * {
             margin: 0;
@@ -469,7 +469,7 @@
         </div>
 
         <div class="logo">
-            <h1>WELDORK</h1>
+            <h1>Capital</h1>
             <p>Metalcraft Solutions</p>
         </div>
         

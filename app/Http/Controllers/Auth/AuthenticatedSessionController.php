@@ -3,45 +3,46 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
+    // صفحة تسجيل الدخول
     public function create(): View
     {
+        // اتأكدي إن عندك resources/views/auth/login.blade.php
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): RedirectResponse
+    // تنفيذ تسجيل الدخول
+    public function store(Request $request): RedirectResponse
     {
-        $request->authenticate();
+        $credentials = $request->validate([
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            // هيوجه لآخر صفحة كان طالبها، أو /dashboard
+            return redirect()->intended(route('dashboard'));
+        }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return back()->withErrors([
+            'email' => __('auth.failed'),
+        ])->onlyInput('email');
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
+    // تسجيل الخروج
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }
